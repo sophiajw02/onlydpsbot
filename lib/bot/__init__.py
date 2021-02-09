@@ -23,7 +23,7 @@ class Ready(object):
             setattr(self, cog, False)
 
     def ready_up(self, cog):
-        setarr(self, cog, True)
+        setattr(self, cog, True)
         print(f" {cog} cog ready")
 
     def all_ready(self):
@@ -62,27 +62,27 @@ class Bot(BotBase):
         print("running bot...")
         super().run(self.TOKEN, reconnect=True)
 
-    async def process_commands(self, message):
-        ctx = await self.get_context(message, cls=Context)
+    # async def process_commands(self, message):
+    #     ctx = await self.get_context(message, cls=Context)
 
-        if ctx.command is not None and ctx.guild is not None:
-            if any([isinstance(exc,error) for error in IGNORE_EXCEPTIONS]):
-                pass
-            elif isinstance(exc, BadArgument):
-                pass
-            elif isinstance(exc, MissingRequiredArgument):
-                await ctx.send("one or more arguments missing")
-            elif isinstance(exc.original, HTPPException):
-                await ctx.send("unble to send message")
-            elif isinstance(exc.original, Forbidden):
-                await ctx.send("no permission to complete command")
-            else:
-                await exc.original
+    #     if ctx.command is not None and ctx.guild is not None:
+    #         if any([isinstance(exc,error) for error in IGNORE_EXCEPTIONS]):
+    #             pass
+    #         elif isinstance(exc, BadArgument):
+    #             pass
+    #         elif isinstance(exc, MissingRequiredArgument):
+    #             await ctx.send("one or more arguments missing")
+    #         elif isinstance(exc.original, HTPPException):
+    #             await ctx.send("unble to send message")
+    #         elif isinstance(exc.original, Forbidden):
+    #             await ctx.send("no permission to complete command")
+    #         else:
+    #             await exc.original
 
     async def rules_reminder(self):
         await self.stdout.send("Please follow the rules!")
 
-    async def on_command():
+    async def on_command(ctx, error):
         print("Bot connected and online!")
 
     async def on_disconnect():
@@ -132,7 +132,7 @@ class Bot(BotBase):
 
     async def on_message(self,message):
         if not message.author.bot: #ignore messages from bots
-            self.process_commands(message)
+            await self.process_commands(message)
 
 bot = Bot()
         

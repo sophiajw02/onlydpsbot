@@ -3,7 +3,7 @@ from typing import Optional
 from discord.ext.commands import Cog, command, BadArgument
 from discord import Member
 
-class Fun(cog):
+class Fun(Cog):
     def __init__(self, bot):
         self.bot=bot
 
@@ -13,9 +13,9 @@ class Fun(cog):
 
     @command(name="dice", aliases=["roll"])
     async def roll_dice(self, ctx, die_string: str):
-        dice, value = (int(term) for term in dice_sting.split("d")) #input command would be like 5d5 (roll a 6 die 5 times)
+        dice, value = (int(term) for term in die_string.split("d")) #input command would be like 5d5 (roll a 6 die 5 times)
         if dice <= 25:
-            rolls = [randit(1, value) for i in range(dice)]
+            rolls = [randint(1, value) for i in range(dice)]
             await ctx.send(" + ".join(str(r) for r in rolls) + f" = {sum(rolls)}")
         else:
             await ctx.send("too many dice to be rolled, try a lower number")
