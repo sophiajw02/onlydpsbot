@@ -1,6 +1,7 @@
 from datetime import datetime
 from glob import glob
 from asyncio import sleep
+import os
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
@@ -16,7 +17,8 @@ from ..db import db
 
 PREFIX = "!"
 OWNER_IDS = [524668365349060610] 
-COGS = [path.split("\\")[-1][:-3] for path in glob("./lib/cogs/*.py")]
+COGS = [os.path.split(path)[1][:-3] for path in glob("./lib/cogs/*.py")]
+# COGS = [path.split("\\")[-1][:-3] for path in glob("./lib/cogs/*.py")]
 IGNORE_EXCEPTIONS = (CommandNotFound, BadArgument)
 
 def get_prefix(bot, message):
