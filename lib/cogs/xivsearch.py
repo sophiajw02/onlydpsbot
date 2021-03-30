@@ -50,7 +50,7 @@ class XIVSearch(Cog):
         for each in results['Results']:
             embed = Embed(title=each['Name'], description=f"**{each['ItemUICategory']['Name']}**\n{each['Description']}", colour=DATA_COLOR)
             embed.set_thumbnail(url=f"https://xivapi.com/{each['Icon']}")
-            await ctx.send(file=file, embed = embed)
+            await ctx.send(embed = embed)
 
     @command(name="charactersearch", aliases=["csearch", "charsearch"], help="Search for a character on the Lodestone.", brief="Search up a PC.")
     async def character_search(self, ctx, firstName, lastName, server):
