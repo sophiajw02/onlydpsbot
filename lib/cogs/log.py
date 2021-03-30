@@ -45,7 +45,6 @@ def update_encounters(encounters, encounterData):
     #no change because normal mode log
     else: 
         return encounters
-    
 
 # returns all top rDPS parses
 def log_parses(data):

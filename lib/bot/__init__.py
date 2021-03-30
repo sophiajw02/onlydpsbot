@@ -117,7 +117,7 @@ class Bot(BotBase):
             #    embed.add_field(name=name, value=value, inline=inline)
             # embed.set_author(name="Only DPS Bot", icon_url=self.guild.icon_url)
             # embed.set_footer(text="This is a foooooooooterrrr")
-            #await channel.send(embed=embed)
+            # await self.stdout.send(embed=embed)
             #await channel.send(file=File("data/images/glare.jpg")) #bot sends files in channel
 
             while not self.cogs_ready.all_ready():

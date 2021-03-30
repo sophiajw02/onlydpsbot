@@ -73,7 +73,9 @@ def get_events(eventNum):
 
 def time_conversion(timeString):
     time = int(timeString[11:13])
-    if time<=12:
+    if time==0:
+        newTime = 12 + timeString[13:16] + " A.M."
+    elif time<=12:
         newTime = str(time) + timeString[13:16] + " A.M."
     else:
         newTime = str((time-12)) + timeString[13:16] + " P.M."
@@ -87,7 +89,6 @@ def date_conversion(timeString):
     month = MONTHS_OF_YEAR[monthNum-1]
     return month + " " + day + ", " + year
 
-###function for embed organization
 
 class Calendar(Cog):
     def __init__(self, bot):
@@ -104,16 +105,16 @@ class Calendar(Cog):
         for event in get_events(number):
             title = event["summary"]
             eventID = event["id"]
-
             start = event["start"].get("dateTime", event["start"].get("date"))
             end = event["end"].get("dateTime", event["end"].get("date"))
             date = date_conversion(start)
             start = time_conversion(start)
             end = time_conversion(end)
+            timezone = event["start"].get("timeZone", event["start"].get("date"))
 
             #can also add timezone (w/ UTC-XX:00)
 
-            result.add_field(name=title, value=f"Event ID: {eventID}\nDate: {date}\nStart: {start}\nEnd: {end}", inline=False)
+            result.add_field(name=title, value=f"Event ID: {eventID}\nDate: {date}\nTimezone: {timezone}\nStart: {start}\nEnd: {end}", inline=False)
         await ctx.send(embed = result)    
         
 
@@ -164,15 +165,25 @@ class Calendar(Cog):
         startTime = time_conversion(start)
         endTime = time_conversion(end)
         
-        eventEmbed = Embed(title = "Removing event...",
-                        description = f"Title: {title}\n Date: {dateTime}\nStart: {startTime}\n End: {endTime}",
+        eventEmbed = Embed(title = "Removing event... Are you sure you want to delete this event?",
+                        description = f"**Title:** {title}\n **Date:** {dateTime}\n**Start:** {startTime}\n **End:** {endTime}",
                         colour = 0xFF0000,
                         timestamp=datetime.utcnow())
+        eventEmbed.add_field(name="TYPE '1'", value="YES")
+        eventEmbed.add_field(name="TYPE '2'", value="NO")
         await ctx.send(embed = eventEmbed)
-        
-        #add a confirmation as to whether the user wants to remove this event specifically
 
-        service.events().delete(calendarId=CALENDAR_ID, eventId=eventID).execute()
+        try:
+            msg = await self.bot.wait_for("message", check=lambda message: message.author == ctx.author, timeout=30)
+        except asyncio.TimeoutError:
+            await ctx.send(":x: Command has timed out.")
+        if msg.content=="1":
+            service.events().delete(calendarId=CALENDAR_ID, eventId=eventID).execute()
+            await ctx.send(":green_circle:  Event successfully removed.")
+        elif msg.content=="2":
+            await ctx.send(":red_circle:  Removal of event canceled.")
+        else:
+            await ctx.send(":x: Invalid choice.")
         
     @command(name="getevent", help="Retrieve event details from the calendar with the ID of the event.", brief="Retrieve event details from the calendar.")
     async def get_event(self, ctx, eventID):
@@ -187,9 +198,8 @@ class Calendar(Cog):
         dateTime = date_conversion(start)
         startTime = time_conversion(start)
         endTime = time_conversion(end)
-        print(event)
         eventEmbed = Embed(title = "Event Retrieved!",
-                        description = f"Title: {title}\n Date: {dateTime}\nStart: {startTime}\n End: {endTime}\nDescription: {description}\n URL: {event.get('htmlLink')}",
+                        description = f"**Title:** {title}\n **Date:** {dateTime}\n**Start:** {startTime}\n **End:** {endTime}\n**Description:** {description}\n **URL:** {event.get('htmlLink')}",
                         colour = CALENDAR_COLOR)
         await ctx.send(embed = eventEmbed)
 

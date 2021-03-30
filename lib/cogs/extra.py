@@ -5,6 +5,8 @@ from aiohttp import request
 from discord.ext.commands import Cog, BadArgument, command, cooldown, BucketType, has_permissions, bot_has_permissions
 from discord import Member, Embed
 
+import asyncio
+
 COG_ID = "extra"
 
 class Extra(Cog):
@@ -15,10 +17,6 @@ class Extra(Cog):
     async def on_ready(self):
         if not self.bot.ready:
             self.bot.cogs_ready.ready_up(COG_ID)
-
-    # @command(name="hello", aliases=["hi","welcome"]) #name="insertname", aliases=["cmd","ins","more"], hidden=True
-    # async def say_hello(self, ctx):
-    #     await ctx.send(f"{choice(('Hello', 'Hi', 'Sup'))} {ctx.author.mention}!")
 
     @command(name="dice", aliases=["roll"], help="Roll a x sided die y amount of times. Ex: 2d5.", brief="Roll a x sided die y amount of times. Ex: 2d5.")
     @cooldown(1, 10, BucketType.user) #times before cd triggered, cd in sec, type of cd (user, member, server based)
@@ -42,19 +40,6 @@ class Extra(Cog):
                 await ctx.send(f"Deleted {len(deleted):,} messages.", delete_after=5)
         else:
             await ctx.send("Limit provided is not within acceptable bounds. Please retry.", delete_after=5)
-
-    # @command(name="hug", aliases=["love","comfort"])
-    # @cooldown(1, 10, BucketType.user)
-    # async def give_hug(self, ctx, member: Member, *, reason: Optional[str] = "no reason"):
-    #     #await ctx.message.delete()
-    #         #delete the message the user sent
-    #     await ctx.send(f"{ctx.author.display_name} hugs {member.mention} for {reason}!")
-
-    # @give_hug.error
-    # async def give_hug_error(self,ctx, exc):
-    #     if isinstance(exc, BadArgument):
-    #         await ctx.send("Please retry. That member cannot be found.")
-
 
 def setup(bot):
     bot.add_cog(Extra(bot))
