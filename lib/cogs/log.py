@@ -85,7 +85,7 @@ def output(data):
     return(embed)
 
 def get_data(firstName, lastName, server, region):
-    with open("lib/cogs/logtoken.0", "r", encoding="utf-8") as tf:
+    with open("lib/cogs/log_token.0", "r", encoding="utf-8") as tf:
         FFLOGS_TOKEN = tf.read()
     URL= f"https://www.fflogs.com:443/v1/rankings/character/{firstName}%20{lastName}/{server}/{region}?metric=rdps&api_key={FFLOGS_TOKEN}"
     data = requests.get(URL)
