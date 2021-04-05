@@ -3,9 +3,12 @@
 
 __pycache__
 images/ui
-lib/bot/token.0
-lib/cogs/logtoken.0
-lib/cogs/privatekey.0
+lib/bot/bot_token.0
+lib/bot/channel_id.0
+lib/bot/guild_id.0
+lib/bot/owner_id.0
+lib/cogs/log_token.0
+lib/cogs/xivsearch_token.0
 lib/cogs/calendar_id.0
 /env/
 token.pickle
