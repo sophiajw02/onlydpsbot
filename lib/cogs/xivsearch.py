@@ -6,6 +6,9 @@ import logging
 import json
 import requests
 
+import os
+from dotenv import load_dotenv
+
 import asyncio
 import aiohttp
 import pyxivapi
@@ -20,8 +23,7 @@ ERROR_COLOR = 0xA11616
 DATA_COLOR = 0x0C9C84
 
 def get_token():
-    with open("lib/cogs/xivsearch_token.0", "r", encoding="utf-8") as tf:
-        PRIVATE_KEY = tf.read()
+    PRIVATE_KEY=os.getenv("XIVSEARCH_TOKEN")
     return(PRIVATE_KEY)
 
 class XIVSearch(Cog):

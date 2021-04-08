@@ -4,9 +4,13 @@ from aiohttp import request
 from functools import reduce
 import json
 import requests
+import os
+from dotenv import load_dotenv
 
 from discord.ext.commands import Cog, command
 from discord import Member, Embed
+
+load_dotenv()
 
 COG_ID = "log"
 
@@ -85,8 +89,7 @@ def output(data):
     return(embed)
 
 def get_data(firstName, lastName, server, region):
-    with open("lib/cogs/log_token.0", "r", encoding="utf-8") as tf:
-        FFLOGS_TOKEN = tf.read()
+    FFLOGS_TOKEN=os.getenv("FFLOG_TOKEN")
     URL= f"https://www.fflogs.com:443/v1/rankings/character/{firstName}%20{lastName}/{server}/{region}?metric=rdps&api_key={FFLOGS_TOKEN}"
     data = requests.get(URL)
     jsonData = json.loads(data.text)

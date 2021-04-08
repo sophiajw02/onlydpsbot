@@ -2,6 +2,7 @@ from datetime import datetime
 from glob import glob
 from asyncio import sleep
 import os
+from dotenv import load_dotenv
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
@@ -15,8 +16,9 @@ from discord.ext.commands import (CommandNotFound, BadArgument, MissingRequiredA
 
 from ..db import db
 
+load_dotenv()
+
 PREFIX = "!"
-#OWNER_IDS = [524668365349060610] 
 COGS = [os.path.split(path)[1][:-3] for path in glob("./lib/cogs/*.py")]
 # COGS = [path.split("\\")[-1][:-3] for path in glob("./lib/cogs/*.py")]
 IGNORE_EXCEPTIONS = (CommandNotFound, BadArgument)
@@ -46,9 +48,8 @@ class Bot(BotBase):
         self.scheduler = AsyncIOScheduler()
 
         db.autosave(self.scheduler)
-        with open("lib/bot/owner_id.0", "r", encoding="utf-8") as tf:
-            OWNER_IDS = tf.read()
-        super().__init__(command_prefix=get_prefix, owner_ids=OWNER_IDS) #intents=Intents.all()
+        OWNER_ID=os.getenv("OWNER_ID")
+        super().__init__(command_prefix=get_prefix, owner_ids=OWNER_ID) #intents=Intents.all()
 
     def setup(self):
         for cog in COGS:
@@ -60,8 +61,7 @@ class Bot(BotBase):
         self.VERSION = version
         print("running setup. . .")
         self.setup()
-        with open("lib/bot/bot_token.0", "r", encoding="utf-8") as tf:
-            self.TOKEN = tf.read()
+        self.TOKEN = os.getenv("BOT_TOKEN")
         print("running bot. . .")
         super().run(self.TOKEN, reconnect=True)
 
@@ -104,12 +104,12 @@ class Bot(BotBase):
 
     async def on_ready(self):
         if not self.ready:
-            with open("lib/bot/channel_id.0", "r", encoding="utf-8") as tf:
-                GUILD = tf.read()
-            with open("lib/bot/guild_id.0", "r", encoding="utf-8") as tf:
-                CHANNEL = tf.read()
-            self.guild = self.get_guild(GUILD)
-            self.stdout = self.get_channel(CHANNEL) 
+            GUILD=os.getenv("GUILD_ID")
+            CHANNEL=os.getenv("CHANNEL_ID")
+
+            self.guild = self.get_guild(int(GUILD))
+            self.stdout = self.get_channel(int(CHANNEL)) 
+            
             self.scheduler.add_job(self.rules_reminder, CronTrigger(day_of_week=0, hour=1, minute=0, second=0))
             self.scheduler.start()
 

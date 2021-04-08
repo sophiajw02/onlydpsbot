@@ -2,6 +2,8 @@ from __future__ import print_function
 from datetime import datetime
 import pickle
 import os.path
+import os
+from dotenv import load_dotenv
 
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -15,6 +17,7 @@ from aiohttp import request
 from discord.ext.commands import Cog, BadArgument, command, cooldown, BucketType
 from discord import Member, Embed
 
+load_dotenv()
 COG_ID = "calendar"
 CALENDAR_COLOR = 0x0C9C84
 SETTING_COLOR = 0x03FC6F
@@ -49,8 +52,7 @@ def create_service():
     return service
 
 def get_calendar():
-    with open("lib/cogs/calendar_id.0", "r", encoding="utf-8") as tf:
-        CALENDAR_ID = tf.read()
+    CALENDAR_ID=os.getenv("CALENDAR_ID")
     return CALENDAR_ID
 
 def get_events(eventNum):
