@@ -13,7 +13,9 @@ jobs:
     steps:
     - name: login to server and deploy
       run: |
-        ssh -i ${{ secrets.PROD_SERVER_SSH_KEY }} ${{ secrets.PROD_SERVER_USER }}@${{ secrets.PROD_SERVER_HOST }}
+        KEYFILE="./deploy_key"
+        echo ${{ secrets.PROD_SERVER_SSH_KEY }} > $KEYFILE
+        ssh -i $KEYFILE ${{ secrets.PROD_SERVER_USER }}@${{ secrets.PROD_SERVER_HOST }}
         echo $(ls -l)
         
         
