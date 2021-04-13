@@ -13,8 +13,8 @@ jobs:
     steps:
     - name: login to server and deploy
       run: |
-        KEYFILE="~/.ssh/deploy_key"
         mkdir ~/.ssh
+        KEYFILE="~/.ssh/deploy_key"
         touch $KEYFILE
         touch ~/.ssh/known_hosts
         chmod 600 $KEYFILE
