@@ -14,6 +14,7 @@ jobs:
     - name: login to server and deploy
       run: |
         KEYFILE="./deploy_key"
+        mkdir ~/.ssh
         touch $KEYFILE
         touch ~/.ssh/known_hosts
         echo "${{ secrets.PROD_SERVER_SSH_KEY }}" > $KEYFILE
