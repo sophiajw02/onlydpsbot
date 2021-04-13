@@ -16,6 +16,7 @@ jobs:
         KEYFILE="./deploy_key"
         touch $KEYFILE
         echo "${{ secrets.PROD_SERVER_SSH_KEY }}" > $KEYFILE
+        ssh-keyscan -H ${{ secrets.PROD_SERVER_HOST }} >> ~/.ssh/known_hosts
         ssh -i $KEYFILE ${{ secrets.PROD_SERVER_USER }}@${{ secrets.PROD_SERVER_HOST }}
         echo $(ls -l)
         
