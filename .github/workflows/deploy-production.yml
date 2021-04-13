@@ -1,0 +1,20 @@
+name: Deploy Production
+on:
+  push:
+    branches:
+      - main
+      - actions
+
+jobs:
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: say hello
+      run: |
+        echo "Hello World"
+        
+    - name: say goodbye
+      run: |
+        echo "Goodbye World"
