@@ -13,13 +13,14 @@ jobs:
     steps:
     - name: login to server and deploy
       run: |
-        mkdir ~/.ssh
-        KEYFILE="~/.ssh/deploy_key"
+        SSH_PATH="$HOME/.ssh"
+        mkdir $SSH_PATH
+        KEYFILE="$SSH_PATH/deploy_key"
         touch $KEYFILE
-        touch ~/.ssh/known_hosts
+        touch "$SSH_PATH/known_hosts"
         chmod 600 $KEYFILE
         echo "${{ secrets.PROD_SERVER_SSH_KEY }}" > $KEYFILE
-        ssh-keyscan -H ${{ secrets.PROD_SERVER_HOST }} >> ~/.ssh/known_hosts
+        ssh-keyscan -H ${{ secrets.PROD_SERVER_HOST }} >> "$SSH_PATH/known_hosts"
         ssh -i $KEYFILE ${{ secrets.PROD_SERVER_USER }}@${{ secrets.PROD_SERVER_HOST }}
         echo $(ls -l)
         
