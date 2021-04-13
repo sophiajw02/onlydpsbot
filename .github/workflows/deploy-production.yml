@@ -11,10 +11,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: say hello
+    - name: login to server and deploy
       run: |
-        echo "Hello World"
+        ssh -i ${{ secrets.PROD_SERVER_SSH_KEY }} ${{ secrets.PROD_SERVER_USER }}@${{ secrets.PROD_SERVER_HOST }}
+        echo $(ls -l)
         
-    - name: say goodbye
-      run: |
-        echo "Goodbye World"
+        
