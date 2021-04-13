@@ -21,7 +21,8 @@ jobs:
         chmod 600 $KEYFILE
         echo "${{ secrets.PROD_SERVER_SSH_KEY }}" > $KEYFILE
         ssh-keyscan -H ${{ secrets.PROD_SERVER_HOST }} >> "$SSH_PATH/known_hosts"
-        ssh -i $KEYFILE ${{ secrets.PROD_SERVER_USER }}@${{ secrets.PROD_SERVER_HOST }}
-        echo $(ls -l)
+        VIA_SSH="ssh -i $KEYFILE ${{ secrets.PROD_SERVER_USER }}@${{ secrets.PROD_SERVER_HOST }}"
+        $VIA_SSH 'echo $(ls -l)'
+        
         
         
