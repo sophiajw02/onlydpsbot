@@ -83,6 +83,22 @@ class XIVSearch(Cog):
             embed.set_thumbnail(url=characterResults['Character']['Avatar'])
             embed.set_image(url=characterResults['Character']['Portrait'])
             await ctx.send(embed = embed)
+            
+    @command(name="tripletriad", alias="ttcard", help="Search for Triple Triad card.")
+    async def tripletriad_search(self, ctx, cardName)
+        SESSION = aiohttp.ClientSession()
+        PRIVATE_KEY=get_token()
+        CLIENT = pyxivapi.client.XIVAPIClient(api_key=PRIVATE_KEY, session=SESSION)
+        result = await CLIENT.lore_search(
+            query=f"{cardName}
+            )
+        for each in result['Result']:
+            embed = Embed(title=f'{each['Name']})
+            embed.add_field(name="Text", value=f'{each['Text']})
+            await ctx.send(embed = embed)
+            
+            
+    
 
 def setup(bot):
     bot.add_cog(XIVSearch(bot))
