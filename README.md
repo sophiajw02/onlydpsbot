@@ -1,10 +1,8 @@
 # onlydpsbot
-
-## About
-Only DPS Bot is a Discord Bot that provides raiding aid for Final Fantasy XIV. The bot includes functionality for...
-* Google Calendars (logging events/raid dates)
-* FFLogs (searching up current tier logs)
-* XIVAPI (searching up characters and items from the Lodestone)
+Only DPS Bot is a Discord Bot that provides raiding aid for Final Fantasy XIV. Functionalities include...
+* Logging events and raid dates through Google Calendars
+* Searching up current tier logs through FFLogs
+* Searching up characters and items from the Lodestone through XIVAPI 
 
 
 ## Install dependencies: 
